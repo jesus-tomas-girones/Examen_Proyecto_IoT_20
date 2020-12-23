@@ -1,8 +1,13 @@
 
 # Examen_Proyecto_IoT_20
-Examen Final de Practico (A)
 
-Alumno: ____________________ Hora inicio: ______ entrega: ________   Fecha: 21/12/2020
+Proyecto IoT y Apps Móviles
+
+Grado en Tecnologías Interactivas (2º cuatr. A)
+
+# Examen Final de Practico (A)
+
+Alumno: _______________________ Hora inicio: ______ entrega: ________   Fecha: 21/12/2020
 
 ADVERTENCIA: Puede consultarse cualquier tipo de información propia o disponible a través de Internet. No obstante, queda terminantemente prohibido la comunicación con cualquier persona durante la realización del examen. El envío o recepción de correos electrónicos, WhatsApp, compartición de ficheros, uso de redes sociales, etc. supondrá el suspenso automático de la asignatura.
 
@@ -46,7 +51,7 @@ NOTA: Desde Android 9 no se permite el uso del protocolo http. En su lugar hay q
 
 7.	MQTT: Conéctate al bróker MQTT mqtt.eclipseprojects.io y Suscríbete al token examen/a. Cada vez que este token cambie su valor se mostrará en el interior del EditText de la parte superior.  (15 min)
 
-Entrega de la práctica: ¡IMPORTANTE! Imprescindible realizar todos los pasos
+#Entrega de la práctica: ¡IMPORTANTE! Imprescindible realizar todos los pasos
 
 8.	Verifica que todo funciona correctamente antes de realizar el siguiente punto.
 
