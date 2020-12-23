@@ -7,8 +7,7 @@ public class Programa {
    private String tipo;
    private String foto;
 
-   public Programa() {
-   }
+   public Programa() {}  // Imprescindible si queremos usar el POJO en Firestore
 
    public Programa(String nombre, long hInicio, long hFinal, String tipo, String foto) {
       this.nombre = nombre;
@@ -16,6 +15,14 @@ public class Programa {
       this.hFinal = hFinal;
       this.tipo = tipo;
       this.foto = foto;
+   }
+
+   public long duracion() { // Calcula la duración del programa
+      if (hFinal >= hInicio) // Si comienza y termina el mismo dia ...
+         return hFinal - hInicio;
+      else                   // Si termina el día siguiente ...
+         return 24 - hFinal  //duración hasta el final del día
+                + hInicio;   //duración al principio del siguiente día
    }
 
    public String getNombre() {

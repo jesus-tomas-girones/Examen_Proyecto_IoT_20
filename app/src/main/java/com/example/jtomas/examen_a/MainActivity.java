@@ -44,12 +44,14 @@ import static java.lang.System.currentTimeMillis;
 public class MainActivity extends AppCompatActivity implements MqttCallback {
 
    public static final String TAG = "EXAMEN";
+   // 7.	MQTT
    public static final String topicRoot = "examen/";
    public static final int qos = 1;
    public static final String broker = "tcp://mqtt.eclipseprojects.io:1883";
    public static final String clientId = "Test13459876";
-
    private MqttClient client;
+
+   // 4.	RECICLERVIEW
    private Adaptador adaptador;
 
    // 1. JAVA
@@ -69,6 +71,23 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
       return lista;
    }
 
+   // 2.	ALGORITMO ALTERNATIVA 1
+   Map<String, String> obteneMasLargoPorTipo(List<Programa> programas) {
+      //Inspirado en solución de Maldonado
+      Map<String, Long> duracionMaxima = new HashMap<>();
+      Map<String, String> programaMaximo = new HashMap<>();
+      for (Programa p : programas) {
+         if (duracionMaxima.get(p.getTipo()) == null) {
+            duracionMaxima.put(p.getTipo(), p.duracion());
+            programaMaximo.put(p.getTipo(), p.getNombre());
+         } else if (duracionMaxima.get(p.getTipo()) < p.duracion()) {
+            duracionMaxima.put(p.getTipo(), p.duracion());
+            programaMaximo.put(p.getTipo(), p.getNombre());
+         }
+      }
+      return programaMaximo;
+   }
+
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -78,18 +97,24 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
       List<Programa> programas = obtenerProgramas(PROGRAMACION, TIPO);
       Log.e(TAG, programas.toString());
 
-      Set<String> tipos = new HashSet<>();
+      // 2.	ALGORITMO ALTERNATIVA 1
+      Log.e(TAG, obteneMasLargoPorTipo(programas).toString());
+
+      // 2.	ALGORITMO ALTERNATIVA 2
+      // Mejor poner el algoritmo en un método aparte como en alternativa 1.
+      // En un examen podemos poner el código directamente para ganar tiempo.
+      Set<String> tipos = new HashSet<>(); //Buscamos tipos de programa
       for (Programa programa : programas) {
          tipos.add(programa.getTipo());
       }
 
-      // 2.	ALGORITMO
-      Map<String, String> mapa = new HashMap<>();
-      for (String tipo : tipos) {
-         long masLargo = 0;
-         String nombreMasLargo = "";
-         for (Programa p : programas) {
+      Map<String, String> masLargoPorTipo = new HashMap<>();
+      for (String tipo : tipos) {    // para cada tipo
+         long masLargo = 0;          // duración del programa más largo hasta ahora
+         String nombreMasLargo = ""; // nombre del programa más largo hasta ahora
+         for (Programa p : programas) {  // para cada programa
             if (tipo.equals(p.getTipo())) {
+               //Mejor definir el método Programa.duración(), para ganar tiempo ...
                long duracion;
                if (p.gethFinal() >= p.gethInicio())
                   duracion = p.gethFinal() - p.gethInicio();
@@ -101,17 +126,22 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
                }
             }
          }
-         mapa.put(tipo, nombreMasLargo);
+         masLargoPorTipo.put(tipo, nombreMasLargo);
       }
-      Log.e(TAG, mapa.toString());
+      Log.e(TAG, masLargoPorTipo.toString());
 
       // 4.	RECICLERVIEW
       RecyclerView recyclerView = findViewById(R.id.recyclerView);
       Query query = FirebaseFirestore.getInstance()
               .collection("programas")
-              .whereEqualTo("tipo", "MUSICA") // 6. CONSULTA
+      // 6. CONSULTA
+      //NOTA: Estamos filtrando por "tipo" y ordenado por "nombre" -> necesario índice doble
+      // Podemos ir a la consola Firbase y crearlo. Mejor ejecutar, en el logCat aparece un error,
+      // pulsamos sobre el link que generará el índice doble.
+              .whereEqualTo("tipo", "MUSICA")
               .orderBy("nombre")
               .limit(5);
+      // 6. CONSULTA -FIN
       FirestoreRecyclerOptions<Programa> opciones = new FirestoreRecyclerOptions
               .Builder<Programa>().setQuery(query, Programa.class).build();
       adaptador = new Adaptador(this, opciones);
@@ -146,7 +176,6 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
       Log.d(TAG, "Recibiendo: " + topic + "->" + payload);
       TextView textView = findViewById(R.id.editText);
       textView.setText(payload);
-
    }
 
    @Override
@@ -198,7 +227,6 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
             subirFichero(data.getData(), "programas/" + nombreFichero);
          }
       }
-
    }
 
    // 5. ALMACENAMIENTO
