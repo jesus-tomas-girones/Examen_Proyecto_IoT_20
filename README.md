@@ -3,7 +3,7 @@
 
 ### Grado en Tecnologías Interactivas (2º cuatr. A)
 
-# Examen Final de Practico (A)
+# Examen Final Practico (A)
 
 ### Alumno: _______________________ Hora inicio: ______ entrega: ________   Fecha: 21/12/2020
 
