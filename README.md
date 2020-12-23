@@ -64,8 +64,8 @@ NOTA: Desde Android 9 no se permite el uso del protocolo http. En su lugar hay q
 
 ```
 (_)  1.- JAVA 
-(_)	2.- ALGORITMO
-(_)	3.- ESCRITURA DE DATOS
+(_)  2.- ALGORITMO
+(_)  3.- ESCRITURA DE DATOS
 (_)  4.- RECICLERVIEW
 (_)  5.- ALMACENAMIENTO
 (_)  6.- CONSULTA
